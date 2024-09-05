@@ -38,11 +38,13 @@ while not matrix_input_valid:
 matrix = [[0 for x in range(matrix_width)] for y in range(matrix_height)]
 
 #Här fyller vi matrisen med tiotals värden så att CLI matrisen får (ganska) jämnt utseende.
-fill_integers = 10
+row_integer=1
 for i in range(0,matrix_width):
+    col_integer=1
     for j in range(0,matrix_height):
-        matrix[i][j] = fill_integers
-        fill_integers+=1
+        matrix[i][j] = 10*row_integer+col_integer
+        col_integer+=1
+    row_integer+=1
 
 #Vi sätter värdet längst upp till vänster till poison värdet (P).
 matrix[0][0] = "P"
