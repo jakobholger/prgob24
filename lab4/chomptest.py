@@ -58,7 +58,9 @@ def ask_cell_number(matrix):
         try:
             # Be användaren mata in ett nummer
             user_input = input("Ange ett nummer som finns i matrisen: ")
-
+            if user_input=="P":
+                # Om numret inte hittas i matrisen, kasta ett undantag
+                raise ValueError("Självförstörelse ej tillåtet, försök igen!")
             # Hitta rad och kolumn där numret finns
             for i, row in enumerate(matrix):
                 if user_input in row:
@@ -97,32 +99,9 @@ while not matrix_input_valid:
 
 matrix = create_chocolate_bar(matrix_width, matrix_height)
 
-#Funktion för att testa om inmatningen är giltig
-#Returnar den 'False' är det något fel på användarens inmatningsvärde
-def validate_input(input):
-    #Den får inte vara tom
-    if input=="":
-        print("You entered nothing. Try again.")
-        return False
-    #Den får inte vara P
-    if input=="P":
-        print("Self-destruction not allowed. Try again.")
-        return False
-    #Testa om alla symboler ingår i listan, det vill säga är integers
-    for char in input:
-        if char not in valid_numbers:
-            print("Only integers are accepted. Try again.")
-            return False
-    #Om allt innan har passerat så testar vi om inmatningen finns i matrisen.
-    #Om input är större än höjd gånger bredd + 10 - 1 så är den utanför inmatningsgränserna.
-    ask_cell_number(matrix)
-
-
-
 #Gameloop
 play_again_bool = False
-def game():
-    global matrix
+def game(matrix):
     global play_again_bool
     play_again_bool = False
     
@@ -151,10 +130,10 @@ def game():
     restart = input("För att spela igen inmata 1. För att stänga programmet tryck ENTER.")    
     if restart == "1":
         play_again_bool = True  
-game() 
+game(matrix) 
 
 #Återställ matrisen till sitt ursprunliga tillstånd
 while play_again_bool:
     matrix = create_chocolate_bar(matrix_width,matrix_height)
-    game()
+    game(matrix)
 
