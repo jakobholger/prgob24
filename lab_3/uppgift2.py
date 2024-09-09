@@ -12,8 +12,8 @@ input_is_valid = False
 # Fråga efter antalet rader och kolumner
 while not input_is_valid:
     
-    rows = input("Ange antal rader: ")
-    cols = input("Ange antal kolumner: ")
+    rows = input("Ange antal rader (1-9): ")
+    cols = input("Ange antal kolumner (1-9): ")
 
     if validate_input(rows) and validate_input(cols): #Om båda rows and cols var korrekta inputs, fortsätt.
 
@@ -28,14 +28,14 @@ while not input_is_valid:
         print("  ", end="")
         col_counter = 1
         while col_counter <= cols:
-            print(f"{col_counter:>3}", end="") #Lägg till 'padding' så att stränglängden blir 3 om den innan var kortare än 3
+            print(f"{col_counter:>3}", end="") #Lägg till 'padding' till vänster om strängen så att stränglängden blir 3 om den innan var kortare än 3
             col_counter += 1
         print()
         
         # Raderna med multiplikationstabellen
         row_counter = 1
         while row_counter <= rows:
-            print(f"{row_counter:<2}", end="")  # Skriv ut radnumret
+            print(f"{row_counter:<2}", end="")  # Skriv ut radnumret och se till att det är 2 karaktärer brett.
             col_counter = 1
             while col_counter <= cols:
                 print(f"{row_counter * col_counter:>3}", end="")
