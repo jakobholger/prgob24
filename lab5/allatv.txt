@@ -1,2 +1,2 @@
-Sovrum TV,50,5,100,12
-Badrums TV,20,11,100,15
+Sovrum TV,50,50,100,17
+Badrums TV,20,11,100,12

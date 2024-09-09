@@ -70,7 +70,6 @@ def default_prompt():
             
         valid_inputs.append(str(i+1)) #Det sista alternativet ska vara avsluta.
         print(str(i+1)+". Avsluta") #Adderar vi fler TV objekt kommer avsluta fortfarande vara sist. (Dynamiskt)
-        print(valid_inputs)
         choice = input("Välj: ")
         if choice in valid_inputs:
             input_is_valid = True
