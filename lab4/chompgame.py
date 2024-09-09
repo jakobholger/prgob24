@@ -18,12 +18,7 @@ matrix = create_chocolate_bar(matrix_width, matrix_height)
 def game(matrix): 
     #Loop
     while True:
-        #Om tidigare drag resulterade i att spelare 1 förlorade, vann spelare 2
-        if check_winner(matrix):
-            print("Spelare 2 vann")
-            break
-
-        print("")
+        print()
         print_chocolate_bar(matrix)
         print("\nSpelare 1 tur")
         row,col = ask_cell_number(matrix)
@@ -32,23 +27,25 @@ def game(matrix):
         if check_winner(matrix):
             print("Spelare 1 vann")
             break
-        print("")
+        print()
         print_chocolate_bar(matrix)
         print("\nSpelare 2 tur")
         row,col = ask_cell_number(matrix)
         matrix = chomp(matrix,row,col) 
+
+        #Om tidigare drag resulterade i att spelare 1 förlorade, vann spelare 2
+        if check_winner(matrix):
+            print("Spelare 2 vann")
+            break
+
 game(matrix) #Inkalla funktionen
 
 #Spela igen loop
-play_again_bool = True
-while play_again_bool:
+while True:
     restart = input("För att spela igen inmata 1. För att stänga programmet tryck ENTER.")    
     if restart == "1":
-
         matrix_width,matrix_height = prompt_matrix_size()
         matrix = create_chocolate_bar(matrix_width,matrix_height)
         game(matrix)
-        play_again_bool = True  
     else:
         break
-

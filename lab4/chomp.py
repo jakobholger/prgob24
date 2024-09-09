@@ -72,13 +72,10 @@ def prompt_matrix_size():
     matrix_width = ""
     matrix_height = ""
 
-    matrix_input_valid = False
-
-    while not matrix_input_valid:
+    while True:
         matrix_width = input("Hur många rader ska chokladbaren bestå av (2-9): ")
         matrix_height = input("Hur många kolumer ska chokladbaren bestå av (2-9): ")
         if matrix_width in valid_numbers and matrix_height in valid_numbers:
-            matrix_input_valid = True
             return int(matrix_width),int(matrix_height)
         else:
             print("Inmata ett giltigt nummer. Testa igen.")
