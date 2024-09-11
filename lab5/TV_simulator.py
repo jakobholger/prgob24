@@ -14,50 +14,35 @@ def write_file(item_list, file_name): #Funktion som skriver till textfilen.
         for item in item_list:
             file.write(item.str_for_file() + "\n")  # Se till att varje TV får en egen rad i textfilen.
 
-# Läs data från allatv.txt filen med hjälp av denna funktion
-tv_list = read_file("allatv.txt")
+def change_channel(tv):
+    while True:
+        try:
+            channel = int(input("Inmata kanal att byta till: ")) #Försök hämta input och konvertera till heltal
+            
+            if 1 <= channel <= tv.max_channel: #Kolla om kanalen är inom begränsningarna
+                tv.change_channel(channel)
+                break  #Lämna loopen om vi lyckats byta kanal
 
-
-#Program logik körs här
-print("***Välkommen till TV-simulatorn****")
-
-def tv_prompt(choice):
-    valid_operations = ["1","2","3","4"] 
-    while True: #While true loop som kommer visa TV och dess attribut samt be användaren om indata
+            raise ValueError(f"Inmata värde mellan 1 och {tv.max_channel}.")  #Raisa error om något gick snett.
         
-        print()
-        print(tv_list[choice-1]) #Printa TV objektet som valts
+        except ValueError:
+            print(f"Ogiltig input. Ange ett nummer mellan 1 och {tv.max_channel}.")  #Hantera except genom att printa Ogiltigt input...
 
-        operation =  input("1. Byt kanal \n2. Sänk ljudnivå \n3. Höj ljudnivå\n4. Gå till huvudmenyn\nVälj: ")
-        if operation in valid_operations: #Om strängen vid input finns i valid operations listan så fortsätt
-            if operation == "1": #Om den är lika med 1 så ändra kanal
-                channel = int(input("Inmata värde: "))
-                if channel > tv_list[choice-1].max_channel or channel < 1: #Utanför rangen
-                    input_channel = False
-                    while not input_channel: #Fortsätt fråga användaren om indata tills indatan är giltig
-                        channel = int(input("Kanal för den här TV:n ska vara mellan 1 till " + str(tv_list[choice].max_channel) + ", försök igen:"))
-                        if tv_list[choice-1].change_channel(channel): #Om värdet var giltigt så stoppa while loopen med hjälp av att ändra booleanen.
-                            input_channel = True
-                else:
-                    tv_list[choice-1].change_channel(channel)
-            if operation == "2":
-                tv_list[choice-1].decrease_volume()
+#Måste returnera annars helt useless, går emot uppgiftsbeskrivning  
+def increase_volume(tv):
+    return tv.increase_volume()
 
-            if operation == "3":
-                tv_list[choice-1].increase_volume()
- 
-            if operation == "4": #Lämna whileloopen om användaren matade in 4 i som input.
-                break
+def decrease_volume(tv):
+    return tv.decrease_volume()
 
-game_loop = True #Denna variabel används för att loopa default prompt som ger oss alternativen mellan varje TV och att avsluta programmet.
+def adjust_TV_menu():
+    choice = input("1. Byt kanal \n2. Sänk ljudnivå \n3. Höj ljudnivå\n4. Gå till huvudmenyn\nVälj: ")
+    return choice
 
                 
-def default_prompt():
+def select_TV_menu(tv_list):
 
-    global game_loop #Global för att vi ska du ha tillgång till variabeln.
-    input_is_valid = False
-
-    while not input_is_valid:
+    while True:
         i = 0
         valid_inputs = []
 
@@ -72,18 +57,51 @@ def default_prompt():
         print(str(i+1)+". Avsluta") #Adderar vi fler TV objekt kommer avsluta fortfarande vara sist. (Dynamiskt)
         choice = input("Välj: ")
         if choice in valid_inputs:
-            input_is_valid = True
             choice = int(choice)
             if choice == i+1:
-                game_loop = False
-                break 
-            tv_prompt(choice)
+                return None
+            return tv_list[choice-1]
         else:
             print("\nEj giltig indata. Testa igen.\n")
 
-while game_loop: #Avslutas genom att användaren inmatar värdet för att avsluta.
-    default_prompt()
+def tv_prompt(selected_tv):
+    valid_operations = ["1","2","3","4"] 
+    while True: #While true loop som kommer visa TV och dess attribut samt be användaren om indata
+        
+        print()
+        print(selected_tv) #Printa TV objektet som valts
 
+        choice = adjust_TV_menu()
+
+        if choice not in valid_operations: #Om strängen vid input finns i valid choice listan så fortsätt
+            print("\nFelaktig inmatning. Försök igen.")
+
+        else:
+            if choice == "1": #Om den är lika med 1 så ändra kanal
+                change_channel(selected_tv)
+
+            if choice == "2":
+                if not decrease_volume(selected_tv):
+                    print("\nVolymnivån är på lägsta redan.")
+
+            if choice == "3":
+                if not increase_volume(selected_tv):
+                    print("\nVolymnivån är på högsta redan.")
+ 
+            if choice == "4": #Lämna whileloopen om användaren matade in 4 i som input.
+                break
+
+# Läs data från allatv.txt filen med hjälp av denna funktion
+tv_obj_list = read_file("allatv.txt")
+
+#Program logik börjar här
+print("***Välkommen till TV-simulatorn****")
+
+while True: #Avslutas genom att användaren inmatar värdet för att avsluta. Gameloop
+    selected_tv = select_TV_menu(tv_obj_list)
+    if not selected_tv:
+        break
+    tv_prompt(selected_tv)
 
 # Skriv in den modifierade listan i allatv.txt filen igen.
-write_file(tv_list, "allatv.txt")
+write_file(tv_obj_list, "allatv.txt")
